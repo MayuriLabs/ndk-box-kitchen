@@ -74,6 +74,15 @@ create_patches() {
   mv ../patches.new ../patches
 }
 
+move_exe_to_dist() {
+  cd ../
+  arch=(armeabi-v7a arm64-v8a x86 x86_64)
+  for a in ${arch[@]}; do
+    mkdir -p dist/$a
+    cp -v libs/$a/busybox dist/$a/libbusybox.so
+  done
+}
+
 archive_exe() {
   cd ../
   for f in libs/*/busybox; do
@@ -107,6 +116,9 @@ case "$1" in
     ;;
   archive )
     archive_exe
+    ;;
+  install )
+    move_exe_to_dist
     ;;
   * )
     echo "Usage:"

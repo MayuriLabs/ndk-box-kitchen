@@ -1,0 +1,51 @@
+on:
+  workflow_dispatch:
+
+name: Build busybox
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup dependencies
+        run: sudo apt update && sudo apt install -y git build-essential zip unzip clang llvm
+
+      - name: Clone busybox
+        uses: actions/checkout@v4
+        with:
+          repository: MayuriLabs/busybox
+          path: busybox
+
+      - name: Checkout selinux
+        run: git clone https://android.googlesource.com/platform/external/selinux jni/selinux -b android-14.0.0_r67
+
+      - name: Checkout pcre
+        run: git clone https://android.googlesource.com/platform/external/pcre jni/pcre -b android-14.0.0_r67
+
+      - name: Setup makefiles
+        run: ./run.sh generate
+
+      - name: Setup NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r28c
+
+      - name: Build busybox
+        run: ndk-build -j$(nproc)
+
+      - name: Strip binaries
+        run: |
+          for f in libs/*/busybox; do
+            llvm-strip --strip-unneeded "$f"
+          done
+
+      - name: Move executables to dist
+        run: ./run.sh install
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: busybox
+          path: dist/*
