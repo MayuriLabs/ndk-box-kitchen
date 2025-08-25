@@ -1,16 +1,13 @@
-From 53971e30edd14c1151e7bf0330302ff3d17fcf7e Mon Sep 17 00:00:00 2001
+From c4dccc209398f21aa2862fb33690119022b780ee Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Mon, 15 Jul 2024 18:50:57 -0700
-Subject: [PATCH 08/18] Remove CBQ support from tc
+Subject: [PATCH] Remove CBQ support from tc
 
 CBQ support is removed from Linux.
 More info: https://bugs.busybox.net/show_bug.cgi?id=15931
----
- networking/tc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/networking/tc.c b/networking/tc.c
-index 43187f7ee..92601d6e3 100644
+index 3a79fd2d9..ea9644340 100644
 --- a/networking/tc.c
 +++ b/networking/tc.c
 @@ -31,7 +31,7 @@
@@ -60,5 +57,5 @@ index 43187f7ee..92601d6e3 100644
  			/* don't know how to print options for this class */
  			printf("(options for %s)", name);
 -- 
-2.46.0
+2.50.1
 

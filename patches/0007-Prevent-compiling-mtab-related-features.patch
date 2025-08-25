@@ -1,14 +1,11 @@
-From 2c918c2e8a537125eed6c25f859e692c9909c154 Mon Sep 17 00:00:00 2001
+From 33922f953b3f527b787308ac6ff801fc8939655e Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Sun, 14 Jul 2024 21:26:56 -0700
-Subject: [PATCH 07/18] Prevent compiling mtab related features
+Subject: [PATCH] Prevent compiling mtab related features
 
----
- util-linux/mount.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/util-linux/mount.c b/util-linux/mount.c
-index 4e65b6b46..08058db49 100644
+index d0f0ae1ad..08ee9d4d3 100644
 --- a/util-linux/mount.c
 +++ b/util-linux/mount.c
 @@ -768,7 +768,8 @@ static int mount_it_now(struct mntent *mp, unsigned long vfsflags, char *filtero
@@ -30,5 +27,5 @@ index 4e65b6b46..08058db49 100644
  	return rc;
  }
 -- 
-2.46.0
+2.50.1
 

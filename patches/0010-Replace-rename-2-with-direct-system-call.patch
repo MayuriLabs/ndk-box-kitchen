@@ -1,7 +1,7 @@
-From 893dcbb6e92c3aa4dda33c5766191c1b386be621 Mon Sep 17 00:00:00 2001
+From 7b90a4e3d51e8a8ce78dfd48c6f72f8bde2e0907 Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Sat, 2 Sep 2023 05:21:13 -0700
-Subject: [PATCH 10/18] Replace rename(2) with direct system call
+Subject: [PATCH] Replace rename(2) with direct system call
 
 NDK r26 introduced the following change:
 https://android-review.googlesource.com/c/platform/bionic/+/2240019
@@ -10,9 +10,6 @@ renameat() was added to Linux in kernel 2.6.16
 renameat2() was added to Linux in kernel 3.15
 
 We would love to support kernel versions lower than 3.15
----
- libbb/wrap_funcs.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
 
 diff --git a/libbb/wrap_funcs.c b/libbb/wrap_funcs.c
 index d4548859a..e6a13667f 100644
@@ -49,5 +46,5 @@ index d4548859a..e6a13667f 100644
 +    return __wrap_renameat(AT_FDCWD, old_path, AT_FDCWD, new_path);
 +}
 -- 
-2.46.0
+2.50.1
 

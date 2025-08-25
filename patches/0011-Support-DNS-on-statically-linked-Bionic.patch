@@ -1,16 +1,8 @@
-From 047d382f9fa49119cd1d901b8515e14939763f49 Mon Sep 17 00:00:00 2001
+From 366ec6f618a961915dae7cf0ae4215148925f2e9 Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Mon, 15 Jul 2024 17:20:17 -0700
-Subject: [PATCH 11/18] Support DNS on statically linked Bionic
+Subject: [PATCH] Support DNS on statically linked Bionic
 
----
- include/bionic_resolv.h | 112 ++++++++++++++++++++++++++++++++++++++++
- include/libbb.h         |   2 +
- libbb/wrap_funcs.c      |  11 ++++
- libbb/xconnect.c        |  37 +++++++++++++
- networking/nslookup.c   |  29 +++++------
- 5 files changed, 176 insertions(+), 15 deletions(-)
- create mode 100644 include/bionic_resolv.h
 
 diff --git a/include/bionic_resolv.h b/include/bionic_resolv.h
 new file mode 100644
@@ -131,10 +123,10 @@ index 000000000..a15cb587b
 +extern struct __res_state *__res_get_state(void);
 +#define _res (*__res_get_state())
 diff --git a/include/libbb.h b/include/libbb.h
-index cca33a177..6a7f4fc11 100644
+index 4b3319824..7457820f4 100644
 --- a/include/libbb.h
 +++ b/include/libbb.h
-@@ -831,6 +831,8 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa) FAST_FUNC RETURN
+@@ -840,6 +840,8 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa) FAST_FUNC RETURN
  struct hostent *xgethostbyname(const char *name) FAST_FUNC;
  // Also mount.c and inetd.c are using gethostbyname(),
  // + inet_common.c has additional IPv4-only stuff
@@ -222,10 +214,10 @@ index 0e0b247b8..d444fa577 100644
 +	free(lsa);
 +}
 diff --git a/networking/nslookup.c b/networking/nslookup.c
-index 6da97baf4..56722a28b 100644
+index b67d354f7..e9be265ca 100644
 --- a/networking/nslookup.c
 +++ b/networking/nslookup.c
-@@ -40,6 +40,9 @@
+@@ -41,6 +41,9 @@
  //#include <netdb.h>
  #include "libbb.h"
  #include "common_bufsiz.h"
@@ -233,9 +225,9 @@ index 6da97baf4..56722a28b 100644
 +#include "bionic_resolv.h"
 +#endif
  
- 
- #if !ENABLE_FEATURE_NSLOOKUP_BIG
-@@ -148,7 +151,8 @@ static void server_print(void)
+ /*
+  * Mini nslookup implementation for busybox
+@@ -146,7 +149,8 @@ static void server_print(void)
  	struct sockaddr *sa;
  
  #if ENABLE_FEATURE_IPV6
@@ -245,7 +237,7 @@ index 6da97baf4..56722a28b 100644
  	if (!sa)
  #endif
  		sa = (struct sockaddr*)&_res.nsaddr_list[0];
-@@ -160,14 +164,16 @@ static void server_print(void)
+@@ -158,6 +162,7 @@ static void server_print(void)
  	bb_putchar('\n');
  }
  
@@ -253,17 +245,16 @@ index 6da97baf4..56722a28b 100644
  /* alter the global _res nameserver structure to use
     an explicit dns server instead of what is in /etc/resolv.conf */
  static void set_default_dns(const char *server)
- {
+@@ -165,7 +170,7 @@ static void set_default_dns(const char *server)
  	len_and_sockaddr *lsa;
  
-+	// Set a fallback DNS server
  	if (!server)
 -		return;
 +		server = "8.8.8.8";
  
  	/* NB: this works even with, say, "[::1]:5353"! :) */
  	lsa = xhost2sockaddr(server, 53);
-@@ -178,21 +184,17 @@ static void set_default_dns(const char *server)
+@@ -176,21 +181,17 @@ static void set_default_dns(const char *server)
  		_res.nsaddr_list[0] = lsa->u.sin;
  	}
  #if ENABLE_FEATURE_IPV6
@@ -285,13 +276,13 @@ index 6da97baf4..56722a28b 100644
 +		_res.nsaddr_list[0].sin_family = 0;
  	}
  #endif
-+	free(lsa);
++    free(lsa);
  }
 +#endif
  
  int nslookup_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
  int nslookup_main(int argc, char **argv)
-@@ -205,9 +207,6 @@ int nslookup_main(int argc, char **argv)
+@@ -203,9 +204,6 @@ int nslookup_main(int argc, char **argv)
  	if (!argv[1] || argv[1][0] == '-' || argc > 3)
  		bb_show_usage();
  
@@ -302,5 +293,5 @@ index 6da97baf4..56722a28b 100644
  	/* (but it also says "may be enabled in /etc/resolv.conf") */
  	/*_res.options |= RES_USE_INET6;*/
 -- 
-2.46.0
+2.50.1
 

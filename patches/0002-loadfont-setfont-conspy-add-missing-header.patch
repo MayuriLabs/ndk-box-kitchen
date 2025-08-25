@@ -1,14 +1,10 @@
-From fea349b03d474af1747ac271a4bc399560dc7868 Mon Sep 17 00:00:00 2001
+From 2106c9f6f33789c453d5ca8910f179f609b3f609 Mon Sep 17 00:00:00 2001
 From: Chris Renshaw <osm0sis@outlook.com>
 Date: Thu, 3 Dec 2015 01:29:35 -0400
-Subject: [PATCH 02/18] loadfont/setfont/conspy: add missing header
+Subject: [PATCH] loadfont/setfont/conspy: add missing header
 
 Imported from dorimanx's combined ported header toolchain:
 https://github.com/dorimanx/android-busybox-ndk
----
- include/sys/kd.h | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 include/sys/kd.h
 
 diff --git a/include/sys/kd.h b/include/sys/kd.h
 new file mode 100644
@@ -51,5 +47,5 @@ index 000000000..8b8e56d4d
 +
 +#endif	/* sys/kd.h */
 -- 
-2.46.0
+2.50.1
 

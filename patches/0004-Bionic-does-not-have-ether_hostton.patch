@@ -1,14 +1,11 @@
-From ef644647dca6d2d1d19c2b7eedc84fff7601eb62 Mon Sep 17 00:00:00 2001
+From 0bc6766413e4f664a406a79dc98f621ebc3b6629 Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Sat, 13 Jul 2024 18:35:56 -0700
-Subject: [PATCH 04/18] Bionic does not have ether_hostton
+Subject: [PATCH] Bionic does not have ether_hostton
 
----
- networking/ether-wake.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/networking/ether-wake.c b/networking/ether-wake.c
-index 36e90acfb..0bbf2057f 100644
+index 68df19361..384204294 100644
 --- a/networking/ether-wake.c
 +++ b/networking/ether-wake.c
 @@ -130,7 +130,7 @@ static void get_dest_addr(const char *hostid, struct ether_addr *eaddr)
@@ -21,5 +18,5 @@ index 36e90acfb..0bbf2057f 100644
  		bb_debug_msg("Station address for hostname %s is %s\n\n", hostid, ether_ntoa(eaddr));
  #endif
 -- 
-2.46.0
+2.50.1
 

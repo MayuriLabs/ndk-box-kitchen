@@ -1,15 +1,12 @@
-From dc8a4f4589fc32e7829514078088c3a1e3700886 Mon Sep 17 00:00:00 2001
+From 264fdbab63a9039be754b4e4597e4f9dd7442509 Mon Sep 17 00:00:00 2001
 From: topjohnwu <topjohnwu@gmail.com>
 Date: Sat, 2 May 2020 01:48:30 -0700
-Subject: [PATCH 14/18] Disable SELinux features for install
+Subject: [PATCH] Disable SELinux features for install
 
 matchpathcon is not usable on Android
----
- coreutils/install.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/coreutils/install.c b/coreutils/install.c
-index c0f1c538a..16c014384 100644
+index 00f8be87e..eb3048e7e 100644
 --- a/coreutils/install.c
 +++ b/coreutils/install.c
 @@ -34,13 +34,15 @@
@@ -32,5 +29,5 @@ index c0f1c538a..16c014384 100644
  static const char install_longopts[] ALIGN1 =
  	IF_FEATURE_VERBOSE(
 -- 
-2.46.0
+2.50.1
 

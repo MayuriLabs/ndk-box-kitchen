@@ -1,19 +1,14 @@
-From 266710b5955f51982436507065c62c3854e4c26f Mon Sep 17 00:00:00 2001
+From 853ac23dd3b2da741dac5050f812d14da82c7d62 Mon Sep 17 00:00:00 2001
 From: LoveSy <shana@zju.edu.cn>
 Date: Sun, 20 Mar 2022 00:51:25 +0800
-Subject: [PATCH 09/18] Replace realpath to BSD implementation
+Subject: [PATCH] Replace realpath to BSD implementation
 
----
- libbb/Kbuild.src   |   3 +
- libbb/wrap_funcs.c | 221 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 224 insertions(+)
- create mode 100644 libbb/wrap_funcs.c
 
 diff --git a/libbb/Kbuild.src b/libbb/Kbuild.src
-index 653025e56..4ac314bdb 100644
+index cb8d2c2ec..05e6fe978 100644
 --- a/libbb/Kbuild.src
 +++ b/libbb/Kbuild.src
-@@ -118,6 +118,9 @@ lib-y += xgethostbyname.o
+@@ -120,6 +120,9 @@ lib-y += xgethostbyname.o
  lib-y += xreadlink.o
  lib-y += xrealloc_vector.o
  
@@ -251,5 +246,5 @@ index 000000000..d4548859a
 +    return (resolved);
 +}
 -- 
-2.46.0
+2.50.1
 
